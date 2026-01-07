@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+/* Custom styles for HA-CIE */
+:root {
+  --color-part-1: #9333ea;
+  --color-part-2: #dc2626;
+  --color-part-3: #16a34a;
+  --color-part-4: #2563eb;
+}

@@ -1,0 +1,117 @@
+# HA-CIE Docker Compose Configuration
+# Hospital Accreditation Causal Insight Engine
+
+version: '3.8'
+
+services:
+  # Backend API Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: hacie-backend
+    restart: unless-stopped
+    environment:
+      - APP_NAME=Hospital Accreditation Causal Insight Engine
+      - APP_DEBUG=${APP_DEBUG:-false}
+      - SECRET_KEY=${SECRET_KEY:-change-this-in-production}
+      - STORAGE_MODE=${STORAGE_MODE:-json}
+      - DATA_DIR=/app/data
+      - DATABASE_URL=${DATABASE_URL:-}
+      - NEO4J_URI=${NEO4J_URI:-}
+      - NEO4J_USER=${NEO4J_USER:-neo4j}
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD:-}
+      - JWT_ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=1440
+    volumes:
+      - backend-data:/app/data
+    networks:
+      - hacie-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Frontend Web Application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: hacie-frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3500}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - hacie-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # PostgreSQL Database (optional - for persistent storage)
+  postgres:
+    image: postgres:16-alpine
+    container_name: hacie-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-hacie}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-hacie_password}
+      - POSTGRES_DB=${POSTGRES_DB:-hacie_db}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - hacie-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-hacie} -d ${POSTGRES_DB:-hacie_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - full
+
+  # Neo4j Graph Database (optional - for graph storage)
+  neo4j:
+    image: neo4j:5-community
+    container_name: hacie-neo4j
+    restart: unless-stopped
+    environment:
+      - NEO4J_AUTH=${NEO4J_USER:-neo4j}/${NEO4J_PASSWORD:-neo4j_password}
+      - NEO4J_PLUGINS=["apoc"]
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+    volumes:
+      - neo4j-data:/data
+      - neo4j-logs:/logs
+    ports:
+      - "${NEO4J_HTTP_PORT:-7474}:7474"
+      - "${NEO4J_BOLT_PORT:-7687}:7687"
+    networks:
+      - hacie-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:7474"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    profiles:
+      - full
+
+networks:
+  hacie-network:
+    driver: bridge
+
+volumes:
+  backend-data:
+    driver: local
+  postgres-data:
+    driver: local
+  neo4j-data:
+    driver: local
+  neo4j-logs:
+    driver: local
+

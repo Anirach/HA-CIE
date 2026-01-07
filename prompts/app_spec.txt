@@ -1,0 +1,765 @@
+<project_specification>
+  <project_name>Hospital Accreditation Causal Insight Engine (HA-CIE)</project_name>
+
+  <overview>
+    A comprehensive accreditation analytics platform that transforms complex hospital standards compliance data into an interactive causal knowledge graph. The system enables hospitals to track accreditation readiness over time, explore cause-effect relationships between standard requirements, simulate the impact of improvement interventions on accreditation maturity levels, and generate AI-powered insights for quality improvement. Built upon HA Thailand Standards 5th Edition, ISQua EEA Guidelines 6th Edition, and WHO DISAH Framework.
+  </overview>
+
+  <technology_stack>
+    <frontend>
+      <framework>React 18 + TypeScript</framework>
+      <build_tool>Vite</build_tool>
+      <styling>Tailwind CSS v4</styling>
+      <graph_visualization>Cytoscape.js</graph_visualization>
+      <charts>Recharts</charts>
+      <state_management>Zustand</state_management>
+      <data_fetching>React Query</data_fetching>
+      <icons>Lucide React</icons>
+    </frontend>
+    <backend>
+      <framework>FastAPI (Python 3.11+)</framework>
+      <validation>Pydantic v2</validation>
+      <orm>SQLAlchemy 2.0</orm>
+      <graph_algorithms>NetworkX</graph_algorithms>
+      <causal_inference>DoWhy</causal_inference>
+      <bayesian_networks>pgmpy</bayesian_networks>
+      <treatment_effects>EconML</treatment_effects>
+    </backend>
+    <database>
+      <primary>PostgreSQL 16</primary>
+      <graph>Neo4j 5</graph>
+      <fallback>JSON Mode (in-memory for development)</fallback>
+    </database>
+    <communication>
+      <api>REST API</api>
+      <documentation>Swagger/OpenAPI</documentation>
+    </communication>
+    <deployment>
+      <containerization>Docker + Docker Compose</containerization>
+    </deployment>
+  </technology_stack>
+
+  <prerequisites>
+    <environment_setup>
+      <option name="Docker (Recommended)">Docker and Docker Compose installed</option>
+      <option name="Local Development">Node.js 18+, Python 3.11+</option>
+    </environment_setup>
+    <service_urls>
+      <service name="Frontend" url="http://localhost:3500">React web application</service>
+      <service name="Backend API" url="http://localhost:8000">FastAPI REST endpoints</service>
+      <service name="API Docs" url="http://localhost:8000/docs">Swagger/OpenAPI documentation</service>
+      <service name="Neo4j Browser" url="http://localhost:7474">Graph database web interface</service>
+    </service_urls>
+  </prerequisites>
+
+  <feature_count>270</feature_count>
+
+  <standards_framework>
+    <part number="I" name="Organization Management Overview" weight="20%">
+      <chapter number="I-1" name="Leadership" weight="25%">
+        <focus>Vision, Mission, Values, Senior Leadership</focus>
+        <sub_criteria>
+          <criterion name="Vision, Mission, Values" weight="30%" essential="true" core="true"/>
+          <criterion name="Communication" weight="20%"/>
+          <criterion name="Organization Success" weight="20%" core="true"/>
+          <criterion name="Governance" weight="20%"/>
+          <criterion name="Societal Contribution" weight="10%"/>
+        </sub_criteria>
+      </chapter>
+      <chapter number="I-2" name="Strategy" weight="15%">
+        <focus>Strategic Planning, Action Plans</focus>
+      </chapter>
+      <chapter number="I-3" name="Patient/Customer" weight="20%">
+        <focus>Needs, Expectations, Engagement</focus>
+      </chapter>
+      <chapter number="I-4" name="Measurement, Analysis and KM" weight="15%">
+        <focus>Performance Measurement, Knowledge Management</focus>
+      </chapter>
+      <chapter number="I-5" name="Workforce" weight="15%">
+        <focus>Staff Development, Engagement, Safety</focus>
+      </chapter>
+      <chapter number="I-6" name="Operation" weight="10%">
+        <focus>Process Management, Effectiveness</focus>
+      </chapter>
+    </part>
+    <part number="II" name="Key Hospital Systems" weight="35%">
+      <chapter number="II-1" name="Quality, Risk and Safety" weight="20%">
+        <focus>Quality Management, Risk Framework</focus>
+        <sub_criteria>
+          <criterion name="Quality Management System" weight="30%" core="true"/>
+          <criterion name="Patient Care Quality" weight="25%" essential="true"/>
+          <criterion name="Risk Management Framework" weight="25%" essential="true" core="true"/>
+          <criterion name="Safety Strategies" weight="20%" essential="true"/>
+        </sub_criteria>
+      </chapter>
+      <chapter number="II-2" name="Professional Governance" weight="10%">
+        <focus>Nursing, Medical Staff Oversight</focus>
+      </chapter>
+      <chapter number="II-3" name="Environment of Care" weight="12%">
+        <focus>Physical Environment, Equipment, Safety</focus>
+      </chapter>
+      <chapter number="II-4" name="Infection Prevention and Control" weight="15%">
+        <focus>IPC Program, Surveillance, Practices</focus>
+        <sub_criteria>
+          <criterion name="IPC Program" weight="25%" essential="true"/>
+          <criterion name="Surveillance System" weight="25%"/>
+          <criterion name="General Prevention Practices" weight="25%" essential="true"/>
+          <criterion name="Specific Prevention Practices" weight="25%" essential="true"/>
+        </sub_criteria>
+      </chapter>
+      <chapter number="II-5" name="Medical Record System" weight="8%">
+        <focus>Documentation, Security, Confidentiality</focus>
+      </chapter>
+      <chapter number="II-6" name="Medication Management" weight="15%">
+        <focus>Drug Safety, Prescribing, Administration</focus>
+      </chapter>
+      <chapter number="II-7" name="Diagnostic Investigation" weight="10%">
+        <focus>Lab, Radiology, Pathology Services</focus>
+      </chapter>
+      <chapter number="II-8" name="Disease and Health Hazard Surveillance" weight="5%">
+        <focus>Epidemiology, Public Health</focus>
+      </chapter>
+      <chapter number="II-9" name="Working with Communities" weight="5%">
+        <focus>Community Engagement, Outreach</focus>
+      </chapter>
+    </part>
+    <part number="III" name="Patient Care Process" weight="30%">
+      <chapter number="III-1" name="Access and Entry" weight="15%">
+        <focus>Service Access, Timely Entry</focus>
+      </chapter>
+      <chapter number="III-2" name="Patient Assessment" weight="20%">
+        <focus>Initial and Ongoing Assessment</focus>
+      </chapter>
+      <chapter number="III-3" name="Planning" weight="15%">
+        <focus>Care Planning, Goal Setting</focus>
+      </chapter>
+      <chapter number="III-4" name="Patient Care Delivery" weight="25%">
+        <focus>Safe, Effective Treatment</focus>
+        <sub_criteria>
+          <criterion name="General Care" weight="20%"/>
+          <criterion name="Surgical Care" weight="15%" essential="true"/>
+          <criterion name="Anesthesia Care" weight="15%" essential="true"/>
+          <criterion name="Emergency Care" weight="15%" essential="true"/>
+          <criterion name="Obstetric Care" weight="10%" essential="true"/>
+          <criterion name="Pain Management" weight="10%"/>
+          <criterion name="End of Life Care" weight="10%"/>
+          <criterion name="Restraint Use" weight="5%" essential="true"/>
+        </sub_criteria>
+      </chapter>
+      <chapter number="III-5" name="Information and Empowerment" weight="10%">
+        <focus>Patient Education, Engagement</focus>
+      </chapter>
+      <chapter number="III-6" name="Continuity of Care" weight="15%">
+        <focus>Transitions, Discharge, Follow-up</focus>
+      </chapter>
+    </part>
+    <part number="IV" name="Organization Performance Results" weight="15%">
+      <chapter number="IV-1" name="Healthcare Results" weight="25%">
+        <focus>Clinical Outcomes</focus>
+      </chapter>
+      <chapter number="IV-2" name="Patient/Customer-Focused Results" weight="20%">
+        <focus>Satisfaction, Experience</focus>
+      </chapter>
+      <chapter number="IV-3" name="Workforce Results" weight="15%">
+        <focus>Staff Satisfaction, Retention</focus>
+      </chapter>
+      <chapter number="IV-4" name="Leadership and Governance Results" weight="15%">
+        <focus>Strategic Achievement</focus>
+      </chapter>
+      <chapter number="IV-5" name="Key Work Process Results" weight="15%">
+        <focus>Operational Effectiveness</focus>
+      </chapter>
+      <chapter number="IV-6" name="Financial Results" weight="10%">
+        <focus>Financial Performance</focus>
+      </chapter>
+    </part>
+  </standards_framework>
+
+  <scoring_framework>
+    <ha_thailand_process_scores>
+      <score value="1" level="Design and Early Implementation">Starting to implement with defined structure and guidelines</score>
+      <score value="2" level="Partial Implementation">Practicing guidelines, essential criteria accomplished</score>
+      <score value="3" level="Effective Implementation">Guidelines implemented with coverage and effectiveness</score>
+      <score value="4" level="Continuous Improvement">Assessment and improvement connected to related processes</score>
+      <score value="5" level="Role Model">Good practices, innovations, producing excellent results</score>
+    </ha_thailand_process_scores>
+    <ha_thailand_result_scores>
+      <score value="1" level="Measure">Design for measurement exists</score>
+      <score value="2" level="Relevant and Valid Measure">Key indicators monitored/measured</score>
+      <score value="3" level="Get Use of Measures">Valid measures cover key issues, used for improvement</score>
+      <score value="4" level="Good Results">Higher than average or continuous improvement trend</score>
+      <score value="5" level="Very Good Results">Top quartile performance</score>
+    </ha_thailand_result_scores>
+    <accreditation_levels>
+      <level name="Pass" score_range="2.5-2.9">Basic accreditation achieved</level>
+      <level name="Good" score_range="3.0-3.4">Solid quality systems in place</level>
+      <level name="Very Good" score_range="3.5-3.9">Strong continuous improvement culture</level>
+      <level name="Excellent" score_range="4.0+">Role model organization</level>
+    </accreditation_levels>
+    <isqua_mapping>
+      <rating value="1" description="Does not meet criterion" ha_equivalent="1-1.5"/>
+      <rating value="2" description="Partially meets criterion" ha_equivalent="2-3"/>
+      <rating value="3" description="Fully meets criterion" ha_equivalent="4-5"/>
+    </isqua_mapping>
+    <criterion_classification>
+      <category name="Essential for Safety" weight="30%" multiplier="1.5">
+        <description>Must-achieve criteria for patient/workforce safety. Blocking if below 2.0.</description>
+      </category>
+      <category name="Core for Sustainability" weight="35%" multiplier="1.25">
+        <description>Drive sustainable quality culture. 27% of total scoring points.</description>
+      </category>
+      <category name="Basic Requirements" weight="35%" multiplier="1.0">
+        <description>Foundation for quality systems.</description>
+      </category>
+    </criterion_classification>
+    <maturity_formula>
+      Overall_Maturity_Score = (Part_I_Score × 0.20) + (Part_II_Score × 0.35) + (Part_III_Score × 0.30) + (Part_IV_Score × 0.15)
+    </maturity_formula>
+  </scoring_framework>
+
+  <causal_relationships>
+    <dependency_types>
+      <type name="Prerequisite" strength="0.8-1.0">Must be in place before dependent criterion can succeed</type>
+      <type name="Strong Support" strength="0.6-0.8">Significantly enables success of dependent criterion</type>
+      <type name="Moderate Support" strength="0.4-0.6">Contributes to success but not critical</type>
+      <type name="Weak Support" strength="0.2-0.4">Minor contribution or indirect relationship</type>
+    </dependency_types>
+    <key_pathways>
+      <pathway from="I-1 Leadership" to="II-1 Quality Management"/>
+      <pathway from="I-1 Leadership" to="I-5 Workforce"/>
+      <pathway from="II-1 Quality Management" to="II-4 Infection Prevention"/>
+      <pathway from="II-1 Quality Management" to="II-6 Medication Management"/>
+      <pathway from="I-5 Workforce" to="III-4 Care Delivery"/>
+      <pathway from="II-4 Infection Prevention" to="IV-1 Healthcare Results"/>
+      <pathway from="II-6 Medication Management" to="IV-1 Healthcare Results"/>
+      <pathway from="III-4 Care Delivery" to="IV-1 Healthcare Results"/>
+      <pathway from="IV-1 Healthcare Results" to="IV-2 Patient Results"/>
+    </key_pathways>
+    <cross_domain_dependencies>
+      <dependency source="Part I" target="Part II" strength="0.8">Leadership enables system implementation</dependency>
+      <dependency source="Part II" target="Part III" strength="0.9">Systems enable care processes</dependency>
+      <dependency source="Part III" target="Part IV" strength="0.85">Processes drive outcomes</dependency>
+      <dependency source="Part IV" target="Part I" strength="0.6">Results inform strategy</dependency>
+    </cross_domain_dependencies>
+  </causal_relationships>
+
+  <core_features>
+    <graph_visualization>
+      <feature>Interactive Cytoscape.js visualization of accreditation criteria relationships</feature>
+      <feature>Color-coded nodes by standard domain (4 parts, 15+ chapters)</feature>
+      <feature>Edge thickness represents causal/dependency relationship strength</feature>
+      <feature>Click nodes to see detailed criterion information panel</feature>
+      <feature>Click edges to see dependency explanations with mechanism, direction, strength</feature>
+      <feature>Graph controls: re-layout, fit to view, fullscreen mode</feature>
+      <feature>Auto-fit on first display</feature>
+      <feature>Filter by domain, chapter, criticality level</feature>
+      <feature>Pan and zoom functionality</feature>
+      <feature>Node selection with highlight propagation to connected nodes</feature>
+    </graph_visualization>
+
+    <timeline_animation>
+      <feature>Timeline Mode to animate through assessment cycles</feature>
+      <feature>Play/pause button for auto-advancement through assessments</feature>
+      <feature>Timeline slider to manually scrub through assessment periods</feature>
+      <feature>Speed control (0.5x, 1x, 2x)</feature>
+      <feature>Smooth animated transitions for node colors and fade effects</feature>
+      <feature>Changes panel showing improvements/regressions between assessments</feature>
+    </timeline_animation>
+
+    <maturity_calculator>
+      <feature>Multi-factor weighted scoring across all standard requirements</feature>
+      <feature>HA Thailand 5-level maturity framework integration</feature>
+      <feature>ISQua EEA 3-point rating scale mapping</feature>
+      <feature>Part I-IV domain score calculations with chapter weights</feature>
+      <feature>Essential, Core, and Basic criteria classification</feature>
+      <feature>Accreditation level determination (Pass, Good, Very Good, Excellent)</feature>
+      <feature>Essential criteria override check (blocking if below 2.0)</feature>
+      <feature>Confidence interval display</feature>
+    </maturity_calculator>
+
+    <whatif_simulator>
+      <feature>Hospital Quality Team Mode with full technical interface</feature>
+      <feature>Executive Mode with simplified strategic interface</feature>
+      <feature>Maturity projection based on improvement initiatives</feature>
+      <feature>Pre-built improvement scenarios (Leadership Enhancement, Patient Safety Focus, etc.)</feature>
+      <feature>Custom intervention builder</feature>
+      <feature>Dependency cascade visualization</feature>
+      <feature>Confidence intervals display</feature>
+      <feature>Historical validation comparing projections to actual outcomes</feature>
+      <feature>Export to reports (text, HTML, PDF format)</feature>
+      <feature>QI Team Mode: criterion projections, filtering, cascade depth indicators</feature>
+      <feature>Executive Mode: large maturity score card, plain-language explanations</feature>
+      <feature>Risk indicators for surveyor focus areas</feature>
+      <feature>Timeline to accreditation readiness projection</feature>
+    </whatif_simulator>
+
+    <compliance_dashboard>
+      <feature>View modes: All assessments, Single assessment, Compare multiple periods</feature>
+      <feature>Progress comparison banner with maturity score changes</feature>
+      <feature>Criterion sparklines with trend indicators</feature>
+      <feature>Improvement initiative timeline tracking</feature>
+      <feature>Domain/Chapter score trends across assessments</feature>
+      <feature>Essential Safety Criteria status indicators</feature>
+      <feature>Core Criteria for Sustainability tracking</feature>
+      <feature>Traffic-light status system (green/yellow/orange/red)</feature>
+    </compliance_dashboard>
+
+    <hospital_management>
+      <feature>Upload JSON files for hospital assessment data</feature>
+      <feature>Upload Excel files for hospital assessment data</feature>
+      <feature>Smart merge for assessments of the same hospital</feature>
+      <feature>Hospital settings page with demographics and program details</feature>
+      <feature>Assessment management (view, manage individual cycles)</feature>
+      <feature>Hospital CRUD operations (create, read, update, delete)</feature>
+      <feature>Assessment CRUD operations</feature>
+      <feature>Persistent storage with PostgreSQL</feature>
+      <feature>JSON fallback mode for development</feature>
+    </hospital_management>
+
+    <pdf_reports>
+      <feature>Hospital Profile section (demographics, services, bed capacity, accreditation history)</feature>
+      <feature>Maturity Assessment section (current scores, delta, confidence metrics)</feature>
+      <feature>Self-Assessment Results section (criterion scores with status indicators)</feature>
+      <feature>Gap Analysis section (areas for improvement with priority ranking)</feature>
+      <feature>Improvement Roadmap section (recommended actions with timelines)</feature>
+      <feature>Causal Graph Visualization section (SVG rendering)</feature>
+      <feature>Benchmark Comparison section (performance vs peer hospitals)</feature>
+      <feature>HTML preview option</feature>
+      <feature>PDF download option</feature>
+    </pdf_reports>
+
+    <ai_insights>
+      <feature>Overview tab with quick stats, AI summary, condensed panels</feature>
+      <feature>Gaps and Risks tab with detailed gap analysis and risk prioritization</feature>
+      <feature>Recommendations tab with priority interventions and expected impact</feature>
+      <feature>Surveyor Prep tab with focus areas and potential IFI items</feature>
+      <feature>Pattern recognition across assessment cycles</feature>
+      <feature>Risk assessment with overall score (0-100) and domain breakdowns</feature>
+      <feature>Gap identification with root cause analysis</feature>
+      <feature>Prioritized improvement recommendations based on causal analysis</feature>
+      <feature>Maturity projection for 6, 12, and 24-month forecasts</feature>
+      <feature>Insights cache management</feature>
+    </ai_insights>
+
+    <causal_inference>
+      <feature>Impact estimation with Average Treatment Effect (ATE) calculation</feature>
+      <feature>Counterfactual analysis for what-if predictions</feature>
+      <feature>Dependency discovery from hospital data</feature>
+      <feature>Root cause analysis for quality incidents</feature>
+      <feature>Confounder identification</feature>
+      <feature>Linear regression estimation method</feature>
+      <feature>Propensity score weighting method</feature>
+      <feature>Propensity score matching method</feature>
+      <feature>CausalForestDML (double machine learning) method</feature>
+      <feature>Structure learning with pgmpy</feature>
+      <feature>Sensitivity analysis</feature>
+    </causal_inference>
+
+    <digital_health_integration>
+      <feature>WHO DISAH framework integration</feature>
+      <feature>Point of Service interventions tracking (EMR, CDSS, Telehealth)</feature>
+      <feature>Provider Administration interventions tracking (HRIS, LMS, Finance)</feature>
+      <feature>Registries and Directories tracking (Patient Index, Facility Registry)</feature>
+      <feature>Data Management tracking (Analytics, Interoperability)</feature>
+      <feature>Surveillance and Response tracking (Disease Surveillance, Emergency Response)</feature>
+      <feature>Digital health readiness assessment</feature>
+    </digital_health_integration>
+
+    <isqua_integration>
+      <feature>ISQua EEA 9 Principles alignment tracking</feature>
+      <feature>Standards Development and Rating methodology tracking</feature>
+      <feature>Governance, Leadership and Management mapping to Part I</feature>
+      <feature>Person-Centred Care mapping to Part III</feature>
+      <feature>Safety and Risk Management mapping to II-1</feature>
+      <feature>Process of Care Delivery mapping to Part III</feature>
+      <feature>Sustainable Care environmental sustainability tracking</feature>
+      <feature>Digital Care and AI Systems mapping</feature>
+      <feature>Supporting Care Workforce mapping to I-5 and II-2</feature>
+      <feature>Quality Performance mapping to Part IV</feature>
+    </isqua_integration>
+  </core_features>
+
+  <security_and_access_control>
+    <user_roles>
+      <role name="QI Team Member">
+        <description>Hospital Quality Improvement team member with full technical access</description>
+        <permissions>
+          - Full access to all technical interfaces
+          - View and edit hospital data
+          - Run simulations with full parameters
+          - Access causal inference tools
+          - Generate and export reports
+          - View confidence intervals and cascade effects
+        </permissions>
+      </role>
+      <role name="Executive">
+        <description>Hospital executive with simplified strategic interface</description>
+        <permissions>
+          - Access simplified Executive Mode views
+          - View maturity scores and projections
+          - View plain-language explanations
+          - View risk indicators
+          - Generate executive reports
+          - Cannot access technical configuration
+        </permissions>
+      </role>
+    </user_roles>
+    <role_toggle>
+      <description>Toggle between QI Team and Executive modes on Simulator page</description>
+    </role_toggle>
+  </security_and_access_control>
+
+  <database_schema>
+    <postgresql_tables>
+      <table name="hospitals">
+        - id (UUID, primary key)
+        - name (VARCHAR)
+        - bed_count (INTEGER)
+        - hospital_type (VARCHAR: General, Specialty, University)
+        - region (VARCHAR)
+        - ownership (VARCHAR: Public, Private, Foundation)
+        - created_at (TIMESTAMP)
+        - updated_at (TIMESTAMP)
+      </table>
+      <table name="assessments">
+        - id (UUID, primary key)
+        - hospital_id (UUID, foreign key)
+        - assessment_date (DATE)
+        - assessment_cycle (VARCHAR)
+        - overall_maturity_score (DECIMAL)
+        - accreditation_level (VARCHAR)
+        - created_at (TIMESTAMP)
+      </table>
+      <table name="criterion_scores">
+        - id (UUID, primary key)
+        - assessment_id (UUID, foreign key)
+        - criterion_id (VARCHAR)
+        - part (VARCHAR)
+        - chapter (VARCHAR)
+        - score (DECIMAL)
+        - notes (TEXT)
+      </table>
+      <table name="simulations">
+        - id (UUID, primary key)
+        - hospital_id (UUID, foreign key)
+        - scenario_name (VARCHAR)
+        - interventions (JSONB)
+        - projected_score (DECIMAL)
+        - confidence_interval (JSONB)
+        - created_at (TIMESTAMP)
+      </table>
+      <table name="improvement_initiatives">
+        - id (UUID, primary key)
+        - hospital_id (UUID, foreign key)
+        - initiative_name (VARCHAR)
+        - target_criteria (JSONB)
+        - start_date (DATE)
+        - target_date (DATE)
+        - status (VARCHAR)
+      </table>
+    </postgresql_tables>
+    <neo4j_graph>
+      <node_types>
+        <type name="Part">Properties: number, name, weight</type>
+        <type name="Chapter">Properties: number, name, weight, part_number</type>
+        <type name="Criterion">Properties: id, name, weight, essential, core, description</type>
+        <type name="Domain">Properties: name, color</type>
+      </node_types>
+      <relationship_types>
+        <type name="CONTAINS">Part contains Chapters, Chapter contains Criteria</type>
+        <type name="DEPENDS_ON">Criterion depends on another Criterion</type>
+        <type name="ENABLES">Criterion enables another Criterion</type>
+        <type name="BELONGS_TO">Criterion belongs to Domain</type>
+      </relationship_types>
+    </neo4j_graph>
+  </database_schema>
+
+  <api_endpoints_summary>
+    <hospitals>
+      - GET /api/v1/hospitals - List all hospitals
+      - GET /api/v1/hospitals/{id} - Get hospital details
+      - POST /api/v1/hospitals - Create hospital
+      - PATCH /api/v1/hospitals/{id} - Update hospital info
+      - DELETE /api/v1/hospitals/{id} - Delete hospital and all assessments
+      - POST /api/v1/hospitals/upload - Upload hospital JSON/Excel
+    </hospitals>
+    <assessments>
+      - GET /api/v1/hospitals/{id}/assessments - Get hospital assessments
+      - GET /api/v1/hospitals/{id}/assessments/{assessment_id} - Get specific assessment
+      - POST /api/v1/hospitals/{id}/assessments - Create assessment
+      - DELETE /api/v1/hospitals/{id}/assessments/{assessment_id} - Delete assessment
+    </assessments>
+    <graph>
+      - GET /api/v1/hospitals/{id}/graph - Get graph data for visualization
+      - GET /api/v1/graph/standards - Get standards framework graph
+    </graph>
+    <dashboard>
+      - GET /api/v1/hospitals/{id}/dashboard - Get dashboard data
+      - GET /api/v1/hospitals/{id}/trends - Get trend data across assessments
+    </dashboard>
+    <simulations>
+      - POST /api/v1/simulations - Run what-if simulation
+      - GET /api/v1/simulations/scenarios - Get pre-built scenarios
+      - GET /api/v1/simulations/{id} - Get simulation results
+    </simulations>
+    <reports>
+      - GET /api/v1/reports/{hospital_id}/pdf - Download PDF report
+      - GET /api/v1/reports/{hospital_id}/html - Preview report as HTML
+    </reports>
+    <insights>
+      - POST /api/v1/insights/{hospital_id} - Generate comprehensive AI insights
+      - GET /api/v1/insights/{hospital_id}/gaps - Get gap analysis only
+      - GET /api/v1/insights/{hospital_id}/risks - Get risk assessment only
+      - GET /api/v1/insights/{hospital_id}/recommendations - Get recommendations only
+      - DELETE /api/v1/insights/{hospital_id}/cache - Invalidate insights cache
+    </insights>
+    <causal>
+      - POST /api/v1/causal/estimate-effect - Estimate improvement effect
+      - POST /api/v1/causal/counterfactual - Generate counterfactual prediction
+      - POST /api/v1/causal/learn-structure/{hospital_id} - Learn causal structure
+      - POST /api/v1/causal/root-cause - Analyze root cause of gap
+      - GET /api/v1/causal/dependencies/{criterion}/{outcome} - Get dependencies
+      - GET /api/v1/causal/criteria - Get available criteria
+      - GET /api/v1/causal/edges - Get causal edges from graph
+    </causal>
+    <health>
+      - GET /health - Health check with storage mode
+    </health>
+  </api_endpoints_summary>
+
+  <ui_layout>
+    <main_structure>
+      <sidebar>Navigation menu with links to all main sections</sidebar>
+      <header>Role toggle (QI Team/Executive), hospital selector, user menu</header>
+      <main_content>Dynamic content area based on current route</main_content>
+    </main_structure>
+    <pages>
+      <page name="GraphPage">Interactive causal knowledge graph with controls</page>
+      <page name="DashboardPage">Compliance dashboard with trends and sparklines</page>
+      <page name="SimulatorPage">What-if improvement simulator with dual modes</page>
+      <page name="InsightsPage">AI-powered quality insights with tabbed interface</page>
+      <page name="ImportPage">Data import for JSON/Excel files</page>
+      <page name="HospitalSettingsPage">Hospital demographics and program settings</page>
+      <page name="ReportsPage">PDF report generation and preview</page>
+    </pages>
+  </ui_layout>
+
+  <design_system>
+    <color_palette>
+      <domain name="Part I - Organization Management" color="purple"/>
+      <domain name="Part II - Key Hospital Systems" color="red"/>
+      <domain name="Part III - Patient Care Process" color="green"/>
+      <domain name="Part IV - Results" color="blue"/>
+      <status name="Excellent" color="green"/>
+      <status name="Good" color="yellow"/>
+      <status name="Needs Improvement" color="orange"/>
+      <status name="Critical" color="red"/>
+    </color_palette>
+    <typography>
+      <font>Clean sans-serif with clear hierarchy</font>
+      <headings>Bold weights for section headers</headings>
+      <body>Regular weight for content</body>
+    </typography>
+    <components>
+      <cards>Rounded corners, subtle shadows, consistent padding</cards>
+      <buttons>Primary (blue), Secondary (gray), Danger (red)</buttons>
+      <icons>Lucide React for consistency</icons>
+      <modals>Focused interactions for settings and confirmations</modals>
+      <tooltips>Contextual help and data previews on hover</tooltips>
+    </components>
+  </design_system>
+
+  <accessibility>
+    <requirements>
+      - Keyboard navigation support for all interactive elements
+      - High contrast status colors meeting WCAG AA
+      - Clear focus indicators on focused elements
+      - Semantic HTML structure
+      - ARIA labels on icon-only buttons
+      - Screen reader navigation support
+    </requirements>
+  </accessibility>
+
+  <implementation_steps>
+    <step number="1">
+      <title>Project Foundation and Standards Graph</title>
+      <tasks>
+        - Set up React + TypeScript frontend with Vite
+        - Set up FastAPI backend with Pydantic
+        - Implement Neo4j graph database for standards relationships
+        - Create standards graph data model (Parts, Chapters, Criteria)
+        - Build basic Cytoscape.js graph visualization
+        - Implement node click for criterion details
+        - Create PostgreSQL database schema
+        - Build JSON fallback mode for development
+      </tasks>
+    </step>
+    <step number="2">
+      <title>Multi-Assessment Data Model and Dashboard</title>
+      <tasks>
+        - Build hospital CRUD API endpoints
+        - Build assessment CRUD API endpoints
+        - Implement criterion scores storage
+        - Create dashboard API with trend calculations
+        - Build dashboard UI with sparklines
+        - Implement domain score trend charts
+        - Create view mode selector (all/single/compare)
+        - Add progress comparison banner
+      </tasks>
+    </step>
+    <step number="3">
+      <title>What-If Simulator</title>
+      <tasks>
+        - Build simulation API endpoints
+        - Create pre-built improvement scenarios
+        - Implement custom intervention builder
+        - Build maturity projection calculations
+        - Create QI Team Mode interface
+        - Create Executive Mode interface
+        - Implement dependency cascade visualization
+        - Add confidence interval calculations
+      </tasks>
+    </step>
+    <step number="4">
+      <title>Timeline Animation and Edge Details</title>
+      <tasks>
+        - Implement timeline animation controls
+        - Build play/pause/speed functionality
+        - Create smooth node transition animations
+        - Build changes panel for assessment comparisons
+        - Implement edge click for dependency explanations
+        - Add mechanism and direction display
+        - Create strength indicator visualization
+      </tasks>
+    </step>
+    <step number="5">
+      <title>Role-Based Interfaces</title>
+      <tasks>
+        - Implement role toggle component
+        - Build QI Team Mode with full technical features
+        - Build Executive Mode with simplified interface
+        - Create role-based navigation filtering
+        - Implement plain-language explanations for executives
+        - Add risk indicators for surveyor focus areas
+      </tasks>
+    </step>
+    <step number="6">
+      <title>Persistent Storage with PostgreSQL and Neo4j</title>
+      <tasks>
+        - Complete PostgreSQL integration
+        - Complete Neo4j integration
+        - Implement data migration from JSON mode
+        - Build backup and restore functionality
+        - Add Docker Compose for all services
+      </tasks>
+    </step>
+    <step number="7">
+      <title>Digital Health Readiness Integration</title>
+      <tasks>
+        - Implement WHO DISAH framework data model
+        - Create digital health intervention tracking
+        - Build standards alignment mapping
+        - Add digital readiness assessment UI
+      </tasks>
+    </step>
+    <step number="8">
+      <title>PDF Report Generation</title>
+      <tasks>
+        - Build PDF generation service
+        - Create report templates for all sections
+        - Implement SVG graph rendering for PDF
+        - Add HTML preview functionality
+        - Create benchmark comparison section
+      </tasks>
+    </step>
+    <step number="9">
+      <title>AI Insights Engine</title>
+      <tasks>
+        - Build insights API endpoints
+        - Implement pattern recognition algorithms
+        - Create risk assessment scoring
+        - Build gap identification with root causes
+        - Implement recommendation prioritization
+        - Create surveyor preparation module
+        - Add maturity projection forecasting
+        - Build insights caching system
+      </tasks>
+    </step>
+    <step number="10">
+      <title>Advanced Causal Inference</title>
+      <tasks>
+        - Integrate DoWhy for causal inference
+        - Integrate pgmpy for Bayesian networks
+        - Implement ATE estimation methods
+        - Build counterfactual analysis
+        - Create structure learning from data
+        - Implement root cause analysis
+        - Add sensitivity analysis
+        - Integrate EconML for heterogeneous effects
+      </tasks>
+    </step>
+    <step number="11">
+      <title>ISQua EEA Integration and Polish</title>
+      <tasks>
+        - Implement ISQua 9 Principles mapping
+        - Create ISQua self-assessment integration
+        - Add info icons with explanation modals
+        - Final UI polish and accessibility audit
+        - Performance optimization
+        - Documentation and deployment guides
+      </tasks>
+    </step>
+  </implementation_steps>
+
+  <success_criteria>
+    <functionality>
+      - All 4 standard parts with chapters visualized in interactive graph
+      - Multi-assessment tracking with timeline animation
+      - What-if simulator produces accurate maturity projections
+      - AI insights provide actionable recommendations
+      - PDF reports generate with all required sections
+      - Causal inference calculations match expected outputs
+    </functionality>
+    <user_experience>
+      - Graph interactions are smooth and responsive
+      - Executive mode provides clear, non-technical explanations
+      - QI Team mode provides full technical depth
+      - Dashboard loads quickly even with multiple assessments
+      - Role toggle seamlessly switches interface modes
+    </user_experience>
+    <technical_quality>
+      - API response times under 500ms for standard operations
+      - Graph renders 100+ nodes without performance degradation
+      - Database queries optimized with proper indexing
+      - No mock data - all data from real database
+      - Comprehensive error handling throughout
+    </technical_quality>
+    <design_polish>
+      - Consistent color coding across all components
+      - Professional healthcare-grade aesthetic
+      - Responsive layout from desktop to tablet
+      - Accessibility compliance (WCAG AA)
+      - Clear visual hierarchy and information architecture
+    </design_polish>
+  </success_criteria>
+
+  <sample_data>
+    <hospital name="Sample Hospital 001">
+      <description>500-bed general hospital with 3 assessment cycles (2022, 2023, 2024)</description>
+      <progression>Progress from Pass to Good level</progression>
+    </hospital>
+    <hospital name="Sample Hospital 002">
+      <description>200-bed community hospital with 2 assessment cycles</description>
+      <focus>Focused improvement in infection control</focus>
+    </hospital>
+  </sample_data>
+
+  <references>
+    <standard name="HA Thailand Standards 5th Edition">Healthcare Accreditation Institute (Public Organization), 2022</standard>
+    <standard name="ISQua EEA Guidelines 6th Edition">International Society for Quality in Health Care, 2025</standard>
+    <standard name="WHO DISAH Framework">Classification of Digital Health Interventions, Services and Applications in Health, 2023</standard>
+    <framework name="Malcolm Baldrige National Quality Award">MBNQA quality framework</framework>
+    <framework name="Thailand Hospital Indicator Program">THIP benchmarking</framework>
+    <framework name="WHO Global Patient Safety Action Plan">2021-2030</framework>
+  </references>
+</project_specification>
