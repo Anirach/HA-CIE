@@ -11,7 +11,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   token: localStorage.getItem(TOKEN_KEY),
   isAuthenticated: false,
-  isLoading: true,
+  isLoading: false,
   error: null,
 
   login: async (credentials: LoginCredentials) => {

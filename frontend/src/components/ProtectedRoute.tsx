@@ -2,7 +2,7 @@
  * Protected route wrapper component.
  * Redirects unauthenticated users to the login page.
  */
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
@@ -12,15 +12,19 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { isAuthenticated, isLoading, checkAuth } = useAuthStore();
+  const { isAuthenticated, isLoading, checkAuth, token } = useAuthStore();
   const location = useLocation();
+  const hasChecked = useRef(false);
 
   useEffect(() => {
-    checkAuth();
+    if (!hasChecked.current) {
+      hasChecked.current = true;
+      checkAuth();
+    }
   }, [checkAuth]);
 
-  // Show loading state while checking authentication
-  if (isLoading) {
+  // Show loading state while checking authentication (only if we have a token to check)
+  if (isLoading || (token && !isAuthenticated && !hasChecked.current)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="flex flex-col items-center gap-3">
