@@ -7,7 +7,6 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import cytoscape, { Core, NodeSingular, EdgeSingular } from 'cytoscape';
 import {
-  GitBranch,
   ZoomIn,
   ZoomOut,
   Maximize2,
@@ -78,7 +77,7 @@ const LAYOUT_OPTIONS = {
 };
 
 // Cytoscape style
-const CYTOSCAPE_STYLE: cytoscape.Stylesheet[] = [
+const CYTOSCAPE_STYLE: cytoscape.StylesheetStyle[] = [
   {
     selector: 'node',
     style: {
@@ -183,7 +182,7 @@ const SPEED_OPTIONS = [
 export function GraphPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const cyRef = useRef<Core | null>(null);
-  const playIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const playIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   
   // Basic state
   const [selectedPart, setSelectedPart] = useState<string>('all');
@@ -198,7 +197,7 @@ export function GraphPage() {
   const [snapshots, setSnapshots] = useState<SnapshotSummary[]>([]);
   const [currentSnapshotIndex, setCurrentSnapshotIndex] = useState(0);
   const [currentSnapshot, setCurrentSnapshot] = useState<SnapshotDetail | null>(null);
-  const [previousSnapshot, setPreviousSnapshot] = useState<SnapshotDetail | null>(null);
+  const [_previousSnapshot, setPreviousSnapshot] = useState<SnapshotDetail | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [showChangesPanel, setShowChangesPanel] = useState(true);
@@ -393,30 +392,30 @@ export function GraphPage() {
     const cy = cyRef.current;
     
     if (selectedPart === 'all') {
-      cy.elements().show();
+      cy.elements().style('display', 'element');
     } else {
       cy.nodes().forEach((node) => {
         const nodeData = node.data() as GraphNodeData;
         if (nodeData.part === selectedPart) {
-          node.show();
+          node.style('display', 'element');
         } else {
-          node.hide();
+          node.style('display', 'none');
         }
       });
       cy.edges().forEach((edge) => {
         const source = edge.source();
         const target = edge.target();
         if (source.visible() && target.visible()) {
-          edge.show();
+          edge.style('display', 'element');
         } else {
-          edge.hide();
+          edge.style('display', 'none');
         }
       });
     }
     
     // Re-layout if filter changed
     if (selectedPart !== 'all' && cyRef.current) {
-      const layout = cy.layout({ ...LAYOUT_OPTIONS, animate: true, animationDuration: 500 });
+      const layout = cy.layout({ ...LAYOUT_OPTIONS, animate: true, animationDuration: 500 } as cytoscape.LayoutOptions);
       layout.run();
     }
   }, [selectedPart]);

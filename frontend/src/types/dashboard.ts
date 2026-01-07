@@ -93,3 +93,4 @@ export interface HospitalSummary {
   assessment_count: number;
 }
 
+

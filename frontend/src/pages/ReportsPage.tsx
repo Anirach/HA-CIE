@@ -17,7 +17,6 @@ import {
   TrendingUp,
   CheckCircle,
   Clock,
-  ExternalLink,
 } from 'lucide-react';
 import { useRoleStore } from '../store/roleStore';
 import { getHospitals } from '../api/dashboard';

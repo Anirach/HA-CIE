@@ -449,3 +449,4 @@ def get_digital_health_service() -> DigitalHealthService:
         _digital_health_service = DigitalHealthService()
     return _digital_health_service
 
+

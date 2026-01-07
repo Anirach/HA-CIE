@@ -101,3 +101,4 @@ async def preview_report(
             detail=f"Failed to generate report: {str(e)}"
         )
 
+

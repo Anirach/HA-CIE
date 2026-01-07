@@ -550,3 +550,4 @@ def get_causal_service() -> CausalService:
         _causal_service = CausalService()
     return _causal_service
 
+

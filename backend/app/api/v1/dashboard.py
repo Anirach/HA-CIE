@@ -355,3 +355,4 @@ def _get_status(score: Optional[float]) -> str:
         return "needs_improvement"
     return "critical"
 
+

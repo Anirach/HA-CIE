@@ -92,3 +92,4 @@ async def get_latest_snapshot():
     latest_index = len(snapshots) - 1
     return service.get_snapshot(latest_index)
 
+

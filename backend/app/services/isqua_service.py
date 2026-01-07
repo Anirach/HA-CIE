@@ -438,3 +438,4 @@ def get_isqua_service() -> ISQuaService:
         _isqua_service = ISQuaService()
     return _isqua_service
 
+

@@ -13,7 +13,6 @@ import {
   RefreshCw,
   CheckCircle2,
   AlertTriangle,
-  ArrowRight,
   ChevronDown,
   ChevronUp,
   Info,
@@ -326,4 +325,5 @@ export function DigitalHealthPage() {
 }
 
 export default DigitalHealthPage;
+
 

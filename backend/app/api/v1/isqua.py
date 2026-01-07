@@ -134,3 +134,4 @@ async def convert_isqua_to_ha(
         }.get(isqua_rating, "Unknown"),
     }
 
+

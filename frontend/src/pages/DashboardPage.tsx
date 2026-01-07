@@ -9,14 +9,11 @@ import {
   Line,
   AreaChart,
   Area,
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Cell,
 } from 'recharts';
 import {
   LayoutDashboard,
@@ -26,8 +23,6 @@ import {
   CheckCircle2,
   Shield,
   Target,
-  Activity,
-  ChevronRight,
   Building2,
   Calendar,
   Award,
@@ -35,18 +30,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { useRoleStore } from '../store/roleStore';
-import { useFeatureAccess } from '../hooks/useFeatureAccess';
-import { Feature } from '../utils/roleAccess';
 import { getHospitals, getDashboard, getDashboardTrends } from '../api/dashboard';
-import type { DashboardData, DashboardTrends, HospitalSummary } from '../types/dashboard';
-
-// Part colors
-const PART_COLORS: Record<string, string> = {
-  I: '#9333ea',
-  II: '#dc2626',
-  III: '#16a34a',
-  IV: '#2563eb',
-};
 
 const LEVEL_COLORS: Record<string, string> = {
   excellent: '#16a34a',
@@ -122,7 +106,6 @@ function ScoreBadge({ score, size = 'md' }: { score: number | null; size?: 'sm' 
 export function DashboardPage() {
   const { user } = useAuthStore();
   const { isQITeamView, isExecutiveView } = useRoleStore();
-  const { hasAccess } = useFeatureAccess();
   const [selectedHospitalId, setSelectedHospitalId] = useState<string>('hosp-001');
 
   // Fetch hospitals list

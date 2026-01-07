@@ -5,7 +5,6 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
-  Settings,
   Building2,
   Users,
   MapPin,
@@ -13,7 +12,6 @@ import {
   Save,
   RefreshCw,
   CheckCircle2,
-  Shield,
   Globe,
   Bell,
   Palette,

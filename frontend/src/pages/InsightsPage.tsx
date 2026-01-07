@@ -31,7 +31,7 @@ import {
 import { useRoleStore } from '../store/roleStore';
 import { getInsights } from '../api/insights';
 import { getHospitals } from '../api/dashboard';
-import type { Insight, Recommendation, InsightPriority, InsightsResponse } from '../types/insights';
+import type { Insight, Recommendation, InsightPriority } from '../types/insights';
 import clsx from 'clsx';
 
 // Priority colors

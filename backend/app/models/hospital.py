@@ -67,3 +67,4 @@ class Hospital(BaseModel):
             datetime: lambda v: v.isoformat()
         }
 
+

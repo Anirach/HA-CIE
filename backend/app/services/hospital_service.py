@@ -221,3 +221,4 @@ class HospitalService:
 # Singleton instance
 hospital_service = HospitalService()
 
+

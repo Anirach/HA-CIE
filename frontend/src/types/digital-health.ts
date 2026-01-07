@@ -10,7 +10,7 @@ export type ReadinessLevel =
   | 'full_implementation'
   | 'optimizing';
 
-export interface Intervention {
+export interface DigitalHealthIntervention {
   id: string;
   name: string;
   description: string;
@@ -37,7 +37,7 @@ export interface CategoryDetails {
   name: string;
   description: string;
   ha_mapping: string[];
-  interventions: Intervention[];
+  interventions: DigitalHealthIntervention[];
 }
 
 export interface InterventionStatus {
@@ -56,7 +56,7 @@ export interface CategoryAssessment {
   interventions: InterventionStatus[];
 }
 
-export interface CriticalGap {
+export interface DigitalHealthCriticalGap {
   category: string;
   intervention: string;
   current_level: ReadinessLevel;
@@ -78,7 +78,7 @@ export interface DigitalHealthAssessment {
   categories: CategoryAssessment[];
   overall_score: number;
   overall_level: ReadinessLevel;
-  critical_gaps: CriticalGap[];
+  critical_gaps: DigitalHealthCriticalGap[];
   recommendations: DigitalHealthRecommendation[];
 }
 
@@ -90,4 +90,5 @@ export interface HAAlignment {
   critical_for_accreditation: boolean;
   impact_description: string;
 }
+
 

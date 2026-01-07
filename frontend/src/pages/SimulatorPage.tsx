@@ -21,12 +21,10 @@ import {
   Target,
   TrendingUp,
   Clock,
-  AlertTriangle,
   CheckCircle2,
   ChevronRight,
   ArrowRight,
   Zap,
-  Shield,
   RefreshCw,
   Building2,
   Info,
@@ -40,7 +38,7 @@ import {
   runScenarioSummary,
   getImprovementPriorities,
 } from '../api/simulation';
-import type { Scenario, SimulationResult, SimulationSummary, ImprovementPriority } from '../types/simulation';
+import type { SimulationResult, SimulationSummary } from '../types/simulation';
 
 // Part colors
 const PART_COLORS: Record<string, string> = {
@@ -121,7 +119,8 @@ export function SimulatorPage() {
     }
   };
 
-  const selectedScenario = useMemo(() => {
+  // Used for potential future expansion
+  useMemo(() => {
     return scenarios?.find((s) => s.id === selectedScenarioId);
   }, [scenarios, selectedScenarioId]);
 

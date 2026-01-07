@@ -13,7 +13,6 @@ import {
   AlertTriangle,
   RefreshCw,
   Download,
-  FileText,
   Building2,
   Calendar,
   ArrowRight,
@@ -143,7 +142,7 @@ export function ImportPage() {
     setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const downloadTemplate = (type: 'json' | 'excel') => {
+  const downloadTemplate = (_type: 'json' | 'excel') => {
     const template = {
       hospital: {
         name: "Sample Hospital",

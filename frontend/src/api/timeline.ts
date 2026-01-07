@@ -65,3 +65,4 @@ export async function getLatestSnapshot(): Promise<SnapshotDetail> {
   return response.data;
 }
 
+

@@ -65,3 +65,4 @@ export async function convertISQuaToHA(isquaRating: number): Promise<{
   return response.data;
 }
 
+

@@ -108,3 +108,4 @@ async def get_recommendations(
         "total_available": len(full_insights["recommendations"]),
     }
 
+

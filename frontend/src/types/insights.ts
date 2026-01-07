@@ -61,14 +61,14 @@ export interface InsightsResponse {
   risk_level: RiskLevel;
 }
 
-export interface InsightCategory {
+export interface InsightCategoryInfo {
   id: string;
   name: string;
   icon: string;
 }
 
 export interface InsightCategoriesResponse {
-  categories: InsightCategory[];
+  categories: InsightCategoryInfo[];
 }
 
 export interface InsightsSummaryResponse {
@@ -94,4 +94,5 @@ export interface RecommendationsResponse {
   recommendations: Recommendation[];
   total_available: number;
 }
+
 
